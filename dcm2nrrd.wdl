@@ -29,5 +29,10 @@ task dcm2nrrd_plastimatch
     {
         File out = "test.nrrd"
     }
+    meta {
+        author: "Afshin"
+        email: "akbarzadehm@gmail.com"
+        description: "This is a test on terra"
+    }
 
 }
