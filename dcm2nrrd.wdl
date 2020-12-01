@@ -2,7 +2,9 @@ version 1.0
 
 workflow conversion_workflow
 {
-    Array[File] input_file=[]
+    input {
+    Array[File] input_file
+    }
     # File out = "gs://fc-c6818520-7b26-46f8-aff1-57c4db31da5a/output00/simple_output.nrrd"
     call dcm2nrrd_plastimatch{ input: in_file=input_file }
 }
