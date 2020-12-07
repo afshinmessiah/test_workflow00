@@ -17,18 +17,18 @@ task dcm2nrrd_plastimatch
         String out_file 
     }
     command
-    {
+    <<<
         mkdir -p "./data"
         echo 'made folder data'
-        first_file="$(in_file[0]))"
+        first_file=$(in_file[0]))
         echo "${first_file}"
-        folder="${first_file%/*}"
+        folder=${first_file%/*}
         echo $folder
-        cp ${sep=' ' in_file} "./data"
+        cp ~{sep=' ' in_file} "./data"
         echo 'moved data to folder'
         plastimatch convert --input ./data --output-img ${out_file} --output-type float
         echo 'ran plastimatch'
-    }
+    >>>
     runtime
     {
         docker: "biocontainers/plastimatch:v1.7.4dfsg.1-2-deb_cv1"
