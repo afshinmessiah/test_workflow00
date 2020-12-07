@@ -4,7 +4,7 @@ workflow conversion_workflow
 {
     input {
         Array[File] input_file
-        String output_file
+        File output_file
     }
     # File out = "gs://fc-c6818520-7b26-46f8-aff1-57c4db31da5a/output00/simple_output.nrrd"
     call dcm2nrrd_plastimatch{ input: in_file=input_file,  out_file=output_file}
@@ -14,12 +14,14 @@ task dcm2nrrd_plastimatch
     input 
     { 
         Array[File] in_file
-        String out_file 
+        File out_file 
     }
     command
     {
         mkdir -p "./data"
         echo 'made folder data'
+        folder="$(dirname "$in_file[0]")"
+        echo $folder
         cp ${sep=' ' in_file} "./data"
         echo 'moved data to folder'
         plastimatch convert --input ./data --output-img ${out_file} --output-type float
