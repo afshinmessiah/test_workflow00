@@ -27,6 +27,7 @@ task dcm2nrrd_plastimatch
   
         echo 'moved data to folder'
         plastimatch convert --input ${folder} --output-img ~{out_file} --output-type float
+        ls -al
         echo 'ran plastimatch'
     >>>
     runtime
