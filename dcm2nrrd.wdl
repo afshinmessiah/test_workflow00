@@ -24,9 +24,9 @@ task dcm2nrrd_plastimatch
         echo "${first_file}"
         folder=${first_file%/*}
         echo $folder
-        cp ~{sep=' ' in_file} "./data"
+  
         echo 'moved data to folder'
-        plastimatch convert --input ./data --output-img ${out_file} --output-type float
+        plastimatch convert --input ${folder} --output-img ~{out_file} 
         echo 'ran plastimatch'
     >>>
     runtime
