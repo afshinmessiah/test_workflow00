@@ -21,7 +21,7 @@ task dcm2nrrd_plastimatch
         mkdir -p "./data"
         echo 'made folder data'
         first_file="$(in_file[0]))"
-        echo "${firstfile}"
+        echo "${first_file}"
         folder="${first_file%/*}"
         echo $folder
         cp ${sep=' ' in_file} "./data"
