@@ -163,16 +163,16 @@ task preprocessing_task
             #os.remove(rt_nrrd_path)
             print("Done.")
             return out_log
-        dicom_ct_path = os.path.directory(~{dicom_ct_list[0]})
+        dicom_ct_path = os.path.directory('~{dicom_ct_list[0]}')
         print('dicom_ct_path = {}'.format(dicom_ct_path))
-        dicom_rt_path = dicom_rt_list[0]
+        dicom_rt_path = '~{dicom_rt_list[0]}'
         print('dicom_rt_path = {}'.format(dicom_rt_path))
         export_res_nrrd_from_dicom(
             dicom_ct_path,
             dicom_rt_path,
-            ~{output_dir}, ~{pat_id},
-            ~{ct_interpolation}, ~{output_dtype}
-        output_file_list = Find(~{output_dir})
+            '~{output_dir}', '~{pat_id}',
+            '~{ct_interpolation}', '~{output_dtype}'
+        output_file_list = Find('~{output_dir}')
         with open('ouputfiles.json', 'w') as fp:
             json.dump(output_file_list, fp, indent=4)
         )
