@@ -180,7 +180,8 @@ task preprocessing_task
     >>>
     runtime
     {
-        docker: "biocontainers/plastimatch:v1.7.4dfsg.1-2-deb_cv1"
+        # docker: "biocontainers/plastimatch:v1.7.4dfsg.1-2-deb_cv1"
+        docker: "afshinmha/plastimatch_terra_00:latest"
         memory: "4GB"
 
     }
