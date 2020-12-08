@@ -31,6 +31,7 @@ task preprocessing_task
         python3 <<CODE
         import os
         import subprocess
+        import json
         def Find(address, max_depth = 0, cond_function = os.path.isfile,
                 sort_key = None, reverse_sort = False,
                 find_parent_folder=False) -> list:
