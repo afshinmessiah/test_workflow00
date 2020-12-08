@@ -163,7 +163,7 @@ task preprocessing_task
             #os.remove(rt_nrrd_path)
             print("Done.")
             return out_log
-        dicom_ct_path = os.path.directory('~{dicom_ct_list[0]}')
+        dicom_ct_path = os.path.dirname('~{dicom_ct_list[0]}')
         print('dicom_ct_path = {}'.format(dicom_ct_path))
         dicom_rt_path = '~{dicom_rt_list[0]}'
         print('dicom_rt_path = {}'.format(dicom_rt_path))
