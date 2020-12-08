@@ -11,7 +11,7 @@ workflow preprocessing_workflow
     { 
         input: dicom_ct_list=inputs[0].INPUT_CT,
         dicom_rt_list=inputs[0].INPUT_RT,
-        output_dir='xxx',
+        output_dir='./xxx',
         pat_id=inputs[0].PATIENTID
     }
 }
