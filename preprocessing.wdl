@@ -21,9 +21,8 @@ task preprocessing_task
     { 
         Array[File] dicom_ct_list
         Array[File] dicom_rt_list
-        String output_dir 
-        String pat_id,
-        
+        String output_dir
+        String pat_id
     }
     String ct_interpolation = 'linear'
     String output_dtype = "int"
