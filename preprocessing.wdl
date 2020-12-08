@@ -175,7 +175,7 @@ task preprocessing_task
             '~{ct_interpolation}', '~{output_dtype}'
         )
         output_file_list = Find('~{output_dir}')
-        with open('ouputfiles.json', 'w') as fp:
+        with open('outputfiles.json', 'w') as fp:
             json.dump(output_file_list, fp, indent=4)
     
         CODE
