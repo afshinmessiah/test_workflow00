@@ -26,7 +26,6 @@ task preprocessing_task
     }
     String ct_interpolation = 'linear'
     String output_dtype = "int"
-    Array[File] output_dir_files
     command
     <<<
         python3 <<CODE
