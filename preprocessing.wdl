@@ -172,10 +172,11 @@ task preprocessing_task
             dicom_rt_path,
             '~{output_dir}', '~{pat_id}',
             '~{ct_interpolation}', '~{output_dtype}'
+        )
         output_file_list = Find('~{output_dir}')
         with open('ouputfiles.json', 'w') as fp:
             json.dump(output_file_list, fp, indent=4)
-        )
+    
         CODE
     >>>
     runtime
