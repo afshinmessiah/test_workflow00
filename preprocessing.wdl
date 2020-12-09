@@ -183,9 +183,9 @@ task preprocessing_task
         out_text = ''
         for f in output_file_list:
             out_text +='{}\n'.format(f)
-        with open('outputfils.txt'), "w") as text_file:
-            text_file.write(out_text)
-            text_file.close()
+        text_file = open('outputfiles.txt'), "w")
+        text_file.write(out_text)
+        text_file.close()
         CODE
     >>>
     runtime
@@ -199,7 +199,7 @@ task preprocessing_task
     {
         # Object outtt = read_json('outputfiles.json')
         # Array[File] outputfiles = outtt.data
-        Array[File] all_files = read_lines('outputfils.txt')
+        Array[File] all_files = read_lines('outputfiles.txt')
     }
     meta {
         author: "Afshin"
