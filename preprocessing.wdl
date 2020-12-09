@@ -36,6 +36,7 @@ task preprocessing_task
                 sort_key = None, reverse_sort = False,
                 find_parent_folder=False) -> list:
             # rood depth is max_depth = 1
+            address = os.path.abspath(address)
             approved_list = []
             RecursiveFind(address, approved_list, 1, max_depth,
                     cond_function, find_parent_folder)
@@ -177,7 +178,7 @@ task preprocessing_task
         output_file_list = Find('~{output_dir}')
         with open('outputfiles.json', 'w') as fp:
             json.dump(output_file_list, fp, indent=4)
-    
+        print(json.dumps(output_file_list, indent=4))
         CODE
     >>>
     runtime
