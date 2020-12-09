@@ -177,7 +177,7 @@ task preprocessing_task
         )
         output_file_list = Find('~{output_dir}')
         with open('outputfiles.json', 'w') as fp:
-            json.dump(output_file_list, fp, indent=4)
+            json.dump({'data':output_file_list}, fp, indent=4)
         print('this is all {} files\n {}'.format(
             len(output_file_list), json.dumps(output_file_list, indent=4)))
         CODE
@@ -189,9 +189,10 @@ task preprocessing_task
         memory: "4GB"
 
     }
+    Object outtt = read_json('outputfiles.json')
     output 
     {
-        Array[String] outputfiles = read_json('outputfiles.json')
+        Array[String] outputfiles = outtt.data
     }
     meta {
         author: "Afshin"
