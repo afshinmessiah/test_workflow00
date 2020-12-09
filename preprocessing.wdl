@@ -189,9 +189,9 @@ task preprocessing_task
         memory: "4GB"
 
     }
-    Object outtt = read_json('outputfiles.json')
     output 
     {
+        Object outtt = read_json('outputfiles.json')
         Array[String] outputfiles = outtt.data
     }
     meta {
