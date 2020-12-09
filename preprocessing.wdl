@@ -183,7 +183,7 @@ task preprocessing_task
         out_text = ''
         for f in output_file_list:
             out_text +='{}\n'.format(f)
-        text_file = open('outputfiles.txt'), "w")
+        text_file = open('outputfiles.txt', "w")
         text_file.write(out_text)
         text_file.close()
         CODE
