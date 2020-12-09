@@ -200,6 +200,7 @@ task preprocessing_task
         # Object outtt = read_json('outputfiles.json')
         # Array[File] outputfiles = outtt.data
         Array[File] all_files = read_lines('outputfiles.txt')
+        Directory output_dir
     }
     meta {
         author: "Afshin"
