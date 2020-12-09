@@ -180,6 +180,12 @@ task preprocessing_task
             json.dump({'data':output_file_list}, fp, indent=4)
         print('this is all {} files\n {}'.format(
             len(output_file_list), json.dumps(output_file_list, indent=4)))
+        out_text = ''
+        for f in output_file_list:
+            out_text +='{}\n'.format(f)
+        with open('outputfils.txt'), "w") as text_file:
+            text_file.write(out_text)
+            text_file.close()
         CODE
     >>>
     runtime
@@ -191,9 +197,9 @@ task preprocessing_task
     }
     output 
     {
-        Object outtt = read_json('outputfiles.json')
-        Array[File] outputfiles = outtt.data
-        
+        # Object outtt = read_json('outputfiles.json')
+        # Array[File] outputfiles = outtt.data
+        Array[File] all_files = read_lines('outputfils.txt')
     }
     meta {
         author: "Afshin"
