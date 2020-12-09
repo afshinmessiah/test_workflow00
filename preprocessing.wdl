@@ -178,7 +178,8 @@ task preprocessing_task
         output_file_list = Find('~{output_dir}')
         with open('outputfiles.json', 'w') as fp:
             json.dump(output_file_list, fp, indent=4)
-        print(json.dumps(output_file_list, indent=4))
+        print('this is all {} files\n {}'.format(
+            len(output_file_list), json.dumps(output_file_list, indent=4)))
         CODE
     >>>
     runtime
