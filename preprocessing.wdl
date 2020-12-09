@@ -191,7 +191,7 @@ task preprocessing_task
     }
     output 
     {
-        Array[File] outputfiles = read_json('outputfiles.json')
+        Array[String] outputfiles = read_json('outputfiles.json')
     }
     meta {
         author: "Afshin"
