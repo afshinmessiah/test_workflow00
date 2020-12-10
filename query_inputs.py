@@ -108,7 +108,8 @@ if q_results is not None:
         '{}\t'
     )
     data = {}
-    vec_data = []
+    vec_data = {}
+    n = 0
     for row in q_results:
         content += content_form.format(
             row.PATIENTID,
@@ -153,12 +154,12 @@ if q_results is not None:
         data1["SEGSTUDYINSTANCEUID"] = row.SEGSTUDYINSTANCEUID
         data1["SEGSERIESINSTANCEUID"] = row.SEGSERIESINSTANCEUID
         data1["INPUT_SG"] = row.INPUT_SG
-        if len(vec_data) < 2:
-            vec_data.append(data1)
+        vec_data["preprocessing_workflow.inputs[{}]".format(n)] = data1
+        n += 1
         
     
 with open('preprocessing.json', 'w') as fp:
-    json.dump({"preprocessing_workflow.inputs": vec_data}, fp, indent=4)
+    json.dump(vec_data, fp, indent=4)
 WriteStringToFile('./input.tsv', content)
     
         
