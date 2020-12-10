@@ -7,7 +7,7 @@ workflow preprocessing_workflow
         String output_file
     }
     # File out = "gs://fc-c6818520-7b26-46f8-aff1-57c4db31da5a/output00/simple_output.nrrd"
-    scatter (i in range(0, length(inputs)))
+    scatter (i in range(length(inputs)))
     {
         call preprocessing_task
         { 
