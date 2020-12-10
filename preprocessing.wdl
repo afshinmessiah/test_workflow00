@@ -200,8 +200,8 @@ task preprocessing_task
         # Object outtt = read_json('outputfiles.json')
         # Array[File] outputfiles = outtt.data
         # Array[File] all_files = read_lines('outputfiles.txt')
-        Array[File] files_1 = glob(output_dir + "/*")
-        Array[File] files_2 = glob(output_dir + "/*/*")
+        Array[File] files_1 = glob(output_dir + "/**/*")
+        # Array[File] files_2 = glob(output_dir + "/*/*")
     }
     meta {
         author: "Afshin"
