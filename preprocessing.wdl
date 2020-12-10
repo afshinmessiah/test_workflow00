@@ -7,12 +7,28 @@ workflow preprocessing_workflow
         String output_file
     }
     # File out = "gs://fc-c6818520-7b26-46f8-aff1-57c4db31da5a/output00/simple_output.nrrd"
-    call preprocessing_task
-    { 
-        input: dicom_ct_list=inputs[0].INPUT_CT,
-        dicom_rt_list=inputs[0].INPUT_RT,
-        output_dir='./xxx',
-        pat_id=inputs[0].PATIENTID
+    scatter (i in range(0, length(inputs)))
+    {
+        call preprocessing_task
+        { 
+            input: dicom_ct_list=inputs[i].INPUT_CT,
+            dicom_rt_list=inputs[i].INPUT_RT,
+            output_dir='./xxx',
+            pat_id=inputs[i].PATIENTID
+        }
+
+    }
+    # call preprocessing_task
+    # { 
+    #     input: dicom_ct_list=inputs[0].INPUT_CT,
+    #     dicom_rt_list=inputs[0].INPUT_RT,
+    #     output_dir='./xxx',
+    #     pat_id=inputs[0].PATIENTID
+    # }
+    output
+    {
+        Array[File] w_output1 = preprocessing_task.files_1
+        Array[File] w_output2 = preprocessing_task.files_2
     }
 }
 task preprocessing_task
@@ -200,8 +216,8 @@ task preprocessing_task
         # Object outtt = read_json('outputfiles.json')
         # Array[File] outputfiles = outtt.data
         # Array[File] all_files = read_lines('outputfiles.txt')
-        Array[File] files_1 = glob(output_dir + "/**")
-        # Array[File] files_2 = glob(output_dir + "/*/*")
+        Array[File] files_1 = glob(output_dir + "/*")
+        Array[File] files_2 = glob(output_dir + "/*/*")
     }
     meta {
         author: "Afshin"
