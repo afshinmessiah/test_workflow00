@@ -27,8 +27,8 @@ workflow preprocessing_workflow
     # }
     output
     {
-        Array[File] w_output1 = preprocessing_task.files_1
-        Array[File] w_output2 = preprocessing_task.files_2
+        Array[File] w_output1 = flatten(preprocessing_task.files_1)
+        Array[File] w_output2 = flatten(preprocessing_task.files_2)
     }
 }
 task preprocessing_task
