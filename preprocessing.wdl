@@ -13,7 +13,9 @@ workflow preprocessing_workflow
         patien_count_to_query=patien_count_to_query
         }
     Object tmp = read_json(bgquery.jsonfile[0])
+    File jjjjsss = write_object(tmp)
     Array[Object] inputs = tmp.data
+    File innnppp = write_objects(inputs)
     scatter (i in range(length(inputs)))
     {
         call preprocessing_task
@@ -36,6 +38,8 @@ workflow preprocessing_workflow
     {
         Array[File] w_output1 = flatten(preprocessing_task.files_1)
         Array[File] w_output2 = flatten(preprocessing_task.files_2)
+        File jj = jjjjsss
+        File inn = innnppp
     }
 }
 task preprocessing_task
