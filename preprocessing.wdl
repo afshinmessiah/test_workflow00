@@ -12,7 +12,8 @@ workflow preprocessing_workflow
         preproc_input_var_name=preproc_input_var_name,
         patien_count_to_query=patien_count_to_query
         }
-    Array[Object] inputs = read_json(bgquery.jsonfile[0])
+    Object tmp = read_json(bgquery.jsonfile[0])
+    Array[Object] inputs = tmp.data
     scatter (i in range(length(inputs)))
     {
         call preprocessing_task
@@ -376,7 +377,7 @@ task bgquery
                         json.dump(
                             {input_var_name: vec_data}, fp, indent=4)
         j_file_name = '~{json_file}'
-        var_name = '~{preproc_input_var_name}'
+        var_name = 'data'
         lim = ~{patien_count_to_query}
         query_and_write(j_file_name, var_name, lim)
         CODE
