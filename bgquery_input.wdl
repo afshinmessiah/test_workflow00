@@ -9,16 +9,25 @@ workflow bgquery_workflow
     }
 
 
-    call bgquery
+    call bgquery{input:
+        json_file=json_file,
+        preproc_input_var_name=preproc_input_var_name,
+        patien_count_to_query=patien_count_to_query
+        }
 
     output
     {
-        Array[File] jsonfile = glob(json_file)
+        Array[File] jsonfile = bgquery.jsonfile
     }
 }
 task bgquery
 {
-    
+    input 
+    { 
+        String json_file
+        String preproc_input_var_name
+        Int patien_count_to_query
+    }
     String ct_interpolation = 'linear'
     String output_dtype = "int"
     command
@@ -164,6 +173,10 @@ task bgquery
     {
         docker: "afshinmha/plastimatch_terra_00:latest"
         memory: "1GB"
+    }
+    output
+    {
+        Array[File] jsonfile = glob(json_file)
     }
     meta 
     {
