@@ -13,7 +13,7 @@ workflow bgquery_workflow
 
     output
     {
-        File json_file
+        File jsonfile = glob(json_file)
     }
 }
 task bgquery
