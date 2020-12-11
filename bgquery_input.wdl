@@ -164,6 +164,7 @@ task bgquery
         query_and_write(j_file_name, var_name, lim)
         CODE
     >>>
+    }
     runtime
     {
 
