@@ -164,7 +164,7 @@ task bgquery
                             {input_var_name: vec_data}, fp, indent=4)
         j_file_name = '~{json_file}'
         var_name = '~{preproc_input_var_name}'
-        lim = '~{patien_count_to_query}'
+        lim = ~{patien_count_to_query}
         query_and_write(j_file_name, var_name, lim)
         CODE
     >>>
