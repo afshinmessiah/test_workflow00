@@ -38,7 +38,7 @@ task bgquery
         import json
         def query_and_write(json_file_name: str,
                             input_var_name: str,
-                            pat_number: int = -1)
+                            pat_number: int = -1):
             query = """
             WITH
                 CT_SERIES AS 
@@ -96,9 +96,8 @@ task bgquery
                 INPUT_SG
             FROM CT_SERIES JOIN RTSTRUCT_SERIES USING (PATIENTID)
             JOIN SEG_SERIES USING (PATIENTID)
-            ORDER BY PATIENTID 
             ORDER BY PATIENTID
-            {}
+            {1}
             """.format(
                 'canceridc-data.idc_views.dicom_all',
                 '' if pat_number < 1 else 'LIMIT {}'.format(pat_number))
