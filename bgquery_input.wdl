@@ -158,22 +158,20 @@ task bgquery
                     with open(json_file_name, 'w') as fp:
                         json.dump(
                             {input_var_name: vec_data}, fp, indent=4)
-        j_file_name = ~{preprocessing_workflow.json_file}
-        var_name = ~{preprocessing_workflow.preproc_input_var_name}
-        lim = ~{preprocessing_workflow.patien_count_to_query}
+        j_file_name = ~{json_file}
+        var_name = ~{preproc_input_var_name}
+        lim = ~{patien_count_to_query}
         query_and_write(j_file_name, var_name, lim)
         CODE
     >>>
-    }
+    
     runtime
     {
-
         docker: "afshinmha/plastimatch_terra_00:latest"
         memory: "1GB"
-
     }
-
-    meta {
+    meta 
+    {
         author: "Afshin"
         email: "akbarzadehm@gmail.com"
         description: "This task queries big_query table to get the data for Prognostics "
