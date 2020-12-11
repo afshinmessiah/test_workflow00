@@ -12,7 +12,7 @@ workflow preprocessing_workflow
         preproc_input_var_name=preproc_input_var_name,
         patien_count_to_query=patien_count_to_query
         }
-    Array[Object] inputs = read_json(bgquery.jsonfile)
+    Array[Object] inputs = read_json(bgquery.jsonfile[0])
     scatter (i in range(length(inputs)))
     {
         call preprocessing_task
