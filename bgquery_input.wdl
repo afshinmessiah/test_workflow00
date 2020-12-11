@@ -13,17 +13,12 @@ workflow bgquery_workflow
 
     output
     {
-        File jsonfile = glob(json_file)
+        Array[File] jsonfile = glob(json_file)
     }
 }
 task bgquery
 {
-    input 
-    { 
-        String json_file
-        String preproc_input_var_name
-        Int patien_count_to_query
-    }
+    
     String ct_interpolation = 'linear'
     String output_dtype = "int"
     command
