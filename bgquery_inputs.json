@@ -1,0 +1,5 @@
+{
+    "bgquery_workflow.json_file": "prep.json",
+    "bgquery_workflow.preproc_input_var_name": "preprocessing_workflow.inputs",
+    "bgquery_workflow.patien_count_to_query": -1
+}

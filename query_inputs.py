@@ -75,8 +75,10 @@ SELECT
     INPUT_SG
 FROM CT_SERIES JOIN RTSTRUCT_SERIES USING (PATIENTID)
 JOIN SEG_SERIES USING (PATIENTID)
+ORDER BY PATIENTID 
 ORDER BY PATIENTID
-""".format('canceridc-data.idc_views.dicom_all')
+LIMIT {}
+""".format('canceridc-data.idc_views.dicom_all', 4)
 # print(query)
 client = bigquery.Client()
 query_job = client.query(query)
@@ -108,8 +110,7 @@ if q_results is not None:
         '{}\t'
     )
     data = {}
-    vec_data = {}
-    n = 0
+    vec_data = []
     for row in q_results:
         content += content_form.format(
             row.PATIENTID,
@@ -123,26 +124,26 @@ if q_results is not None:
             row.SEGSERIESINSTANCEUID,
             row.INPUT_SG
         )
-        add_or_append_to_dict(
-            data, "PATIENTID", row.PATIENTID)
-        add_or_append_to_dict(
-            data, "CTSTUDYINSTANCEUID", row.CTSTUDYINSTANCEUID)
-        add_or_append_to_dict(
-            data, "CTSERIESINSTANCEUID", row.CTSERIESINSTANCEUID)
-        add_or_append_to_dict(
-            data, "INPUT_CT", row.INPUT_CT)
-        add_or_append_to_dict(
-            data, "RTSTRUCTSTUDYINSTANCEUID", row.RTSTRUCTSTUDYINSTANCEUID)
-        add_or_append_to_dict(
-            data, "RTSTRUCTSERIESINSTANCEUID", row.RTSTRUCTSERIESINSTANCEUID)
-        add_or_append_to_dict(
-            data, "INPUT_RT", row.INPUT_RT)
-        add_or_append_to_dict(
-            data, "SEGSTUDYINSTANCEUID", row.SEGSTUDYINSTANCEUID)
-        add_or_append_to_dict(
-            data, "SEGSERIESINSTANCEUID", row.SEGSERIESINSTANCEUID)
-        add_or_append_to_dict(
-            data, "INPUT_SG", row.INPUT_SG)
+        # add_or_append_to_dict(
+        #     data, "PATIENTID", row.PATIENTID)
+        # add_or_append_to_dict(
+        #     data, "CTSTUDYINSTANCEUID", row.CTSTUDYINSTANCEUID)
+        # add_or_append_to_dict(
+        #     data, "CTSERIESINSTANCEUID", row.CTSERIESINSTANCEUID)
+        # add_or_append_to_dict(
+        #     data, "INPUT_CT", row.INPUT_CT)
+        # add_or_append_to_dict(
+        #     data, "RTSTRUCTSTUDYINSTANCEUID", row.RTSTRUCTSTUDYINSTANCEUID)
+        # add_or_append_to_dict(
+        #     data, "RTSTRUCTSERIESINSTANCEUID", row.RTSTRUCTSERIESINSTANCEUID)
+        # add_or_append_to_dict(
+        #     data, "INPUT_RT", row.INPUT_RT)
+        # add_or_append_to_dict(
+        #     data, "SEGSTUDYINSTANCEUID", row.SEGSTUDYINSTANCEUID)
+        # add_or_append_to_dict(
+        #     data, "SEGSERIESINSTANCEUID", row.SEGSERIESINSTANCEUID)
+        # add_or_append_to_dict(
+        #     data, "INPUT_SG", row.INPUT_SG)
         data1 = {}
         data1["PATIENTID"] = row.PATIENTID
         data1["CTSTUDYINSTANCEUID"] = row.CTSTUDYINSTANCEUID
@@ -154,12 +155,11 @@ if q_results is not None:
         data1["SEGSTUDYINSTANCEUID"] = row.SEGSTUDYINSTANCEUID
         data1["SEGSERIESINSTANCEUID"] = row.SEGSERIESINSTANCEUID
         data1["INPUT_SG"] = row.INPUT_SG
-        vec_data["preprocessing_workflow.inputs[{}]".format(n)] = data1
-        n += 1
+        vec_data.append(data1)
         
     
 with open('preprocessing.json', 'w') as fp:
-    json.dump(vec_data, fp, indent=4)
+    json.dump({"preprocessing_workflow.inputs": vec_data}, fp, indent=4)
 WriteStringToFile('./input.tsv', content)
     
         
