@@ -100,7 +100,7 @@ task bgquery
             ORDER BY PATIENTID
             {1}
             """.format(
-                'canceridc-data.temp_dataset.dicom_all',
+                'canceridc-data.idc_views.dicom_all',
                 '' if pat_number < 1 else 'LIMIT {}'.format(pat_number))
             # print(query)
             client = bigquery.Client()
