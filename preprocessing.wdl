@@ -391,11 +391,11 @@ task bgquery
     {
         Array[File] jsonfile = glob(json_file)
     }
-    meta 
-    {
-        author: "Afshin"
-        email: "akbarzadehm@gmail.com"
-        description: "This task queries big_query table to get the data for Prognostics "
-    }
+    # meta 
+    # {
+    #     author: "Afshin"
+    #     email: "akbarzadehm@gmail.com"
+    #     description: "This task queries big_query table to get the data for Prognostics "
+    # }
 
 }
