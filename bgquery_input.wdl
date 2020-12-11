@@ -50,7 +50,7 @@ task bgquery
                         SERIESINSTANCEUID AS CTSERIESINSTANCEUID,
                         ARRAY_AGG(FORMAT('%s', LEFT(GCS_URL, INSTR(GCS_URL, '#', -1, 1) - 1))) AS INPUT_CT,
                     FROM
-                        `{0}`
+                        \`{0}\`
                     WHERE
                         SOURCE_DOI = "10.7937/K9/TCIA.2015.PF0M9REI"
                         AND MODALITY = "CT"
@@ -64,7 +64,7 @@ task bgquery
                         SERIESINSTANCEUID AS RTSTRUCTSERIESINSTANCEUID,
                         ARRAY_AGG(FORMAT('%s', LEFT(GCS_URL, INSTR(GCS_URL, '#', -1, 1) - 1))) AS INPUT_RT,
                     FROM
-                        `{0}`
+                        \`{0}\`
                     WHERE
                         SOURCE_DOI = "10.7937/K9/TCIA.2015.PF0M9REI"
                         AND MODALITY = "RTSTRUCT"
@@ -78,7 +78,7 @@ task bgquery
                         SERIESINSTANCEUID AS SEGSERIESINSTANCEUID,
                         ARRAY_AGG(FORMAT('%s', LEFT(GCS_URL, INSTR(GCS_URL, '#', -1, 1) - 1))) AS INPUT_SG,
                     FROM
-                        `{0}`
+                        \`{0}\`
                     WHERE
                         SOURCE_DOI = "10.7937/K9/TCIA.2015.PF0M9REI"
                         AND MODALITY = "SEG"
@@ -100,7 +100,7 @@ task bgquery
             ORDER BY PATIENTID
             {1}
             """.format(
-                'canceridc-data.idc_views.dicom_all',
+                'canceridc-data.temp_dataset.dicom_all',
                 '' if pat_number < 1 else 'LIMIT {}'.format(pat_number))
             # print(query)
             client = bigquery.Client()
