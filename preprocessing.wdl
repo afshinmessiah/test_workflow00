@@ -12,18 +12,23 @@ workflow preprocessing_workflow
         preproc_input_var_name=preproc_input_var_name,
         patien_count_to_query=patien_count_to_query
         }
-    Object tmp = read_json(bgquery.jsonfile[0])
-    File jjjjsss = write_object(tmp)
-    Array[Object] inputs = tmp.data
-    File innnppp = write_objects(inputs)
-    scatter (i in range(length(inputs)))
+    scatter(j in range(length(bgquery.jsonfile)))
+    {
+        Object tmp = read_json(bgquery.jsonfile[j])
+        Array[Object] inputs = tmp.data
+    }
+    Array[Object] flattened_inputs = flatten(inputs)
+    # File jjjjsss = write_object(tmp)
+    # Array[Object] inputs = tmp.data
+    # File innnppp = write_objects(inputs)
+    scatter (i in range(length(flattened_inputs)))
     {
         call preprocessing_task
         { 
-            input: dicom_ct_list=inputs[i].INPUT_CT,
-            dicom_rt_list=inputs[i].INPUT_RT,
+            input: dicom_ct_list=flattened_inputs[i].INPUT_CT,
+            dicom_rt_list=flattened_inputs[i].INPUT_RT,
             output_dir='./xxx',
-            pat_id=inputs[i].PATIENTID
+            pat_id=flattened_inputs[i].PATIENTID
         }
 
     }
@@ -325,6 +330,7 @@ task bgquery
             query_job = client.query(query)
             q_results = query_job.result()
             content = ''
+            size_limit = 10000000
             if q_results is not None:
                 content += (
                     'workspace:PATIENTID' + '\t' +
@@ -350,9 +356,10 @@ task bgquery
                     '{}\t' +
                     '{}\t'
                 )
-                data = {}
+                file_counter = 0
                 vec_data = []
-                for row in q_results:
+                sz_factor = 1
+                for i, row in enumerate(q_results):
                     content += content_form.format(
                         row.PATIENTID,
                         row.CTSTUDYINSTANCEUID,
@@ -377,10 +384,34 @@ task bgquery
                     data1["SEGSERIESINSTANCEUID"] = row.SEGSERIESINSTANCEUID
                     data1["INPUT_SG"] = row.INPUT_SG
                     vec_data.append(data1)
-                    with open(json_file_name, 'w') as fp:
-                        json.dump(
-                            {input_var_name: vec_data}, fp, indent=4)
-        j_file_name = '~{json_file}'
+                    size = len(
+                        json.dumps({input_var_name: vec_data}, indent=4)) * sz_factor
+                    size_1 = len(
+                        json.dumps({input_var_name: vec_data[0:-1]}, indent=4)) * sz_factor
+                    # if i == 0:
+                    #     with open('test.json', 'w') as fp:
+                    #         json.dump({input_var_name: vec_data}, fp, indent=4)
+                    #     sz = os.path.getsize('test.json')
+                    #     sz_factor = sz / size
+                    #     size = sz
+                    #     os.remove('test.json')
+
+                    
+                    if size > 0.99 * size_limit:
+                        filename = '{}_{:03d}.json'.format(
+                            json_file_name, file_counter)
+                        with open(filename, 'w') as fp:
+                            json.dump(
+                                {input_var_name: vec_data[0:-1]}, fp, indent=4)
+                        sz = os.path.getsize(filename)
+                        sz_factor = sz / size_1
+                        file_counter += 1
+                        vec_data = [vec_data[-1]]
+                filename = '{}_{:03d}.json'.format(json_file_name, file_counter)
+                with open(filename, 'w') as fp:
+                    json.dump(
+                        {input_var_name: vec_data}, fp, indent=4)
+                j_file_name = '~{json_file}'
         var_name = 'data'
         lim = ~{patien_count_to_query}
         query_and_write(j_file_name, var_name, lim)
@@ -394,7 +425,7 @@ task bgquery
     }
     output
     {
-        Array[File] jsonfile = glob(json_file)
+        Array[File] jsonfiles = glob(json_file + "*.json")
     }
     # meta 
     # {

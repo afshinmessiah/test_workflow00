@@ -71,6 +71,7 @@ def query_and_write(json_file_name: str,
     query_job = client.query(query)
     q_results = query_job.result()
     content = ''
+    size_limit = 10000000
     if q_results is not None:
         content += (
             'workspace:PATIENTID' + '\t' +
@@ -96,9 +97,11 @@ def query_and_write(json_file_name: str,
             '{}\t' +
             '{}\t'
         )
-        data = {}
+        file_counter = 0
         vec_data = []
-        for row in q_results:
+        size = 0
+        sz_factor = 1
+        for i, row in enumerate(q_results):
             content += content_form.format(
                 row.PATIENTID,
                 row.CTSTUDYINSTANCEUID,
@@ -123,9 +126,38 @@ def query_and_write(json_file_name: str,
             data1["SEGSERIESINSTANCEUID"] = row.SEGSERIESINSTANCEUID
             data1["INPUT_SG"] = row.INPUT_SG
             vec_data.append(data1)
-            with open(json_file_name, 'w') as fp:
-                json.dump(
-                    {input_var_name: vec_data}, fp, indent=4)
+            size = len(
+                json.dumps({input_var_name: vec_data}, indent=4)) * sz_factor
+            size_1 = len(
+                json.dumps({input_var_name: vec_data[0:-1]}, indent=4)) * sz_factor
+            # if i == 0:
+            #     with open('test.json', 'w') as fp:
+            #         json.dump({input_var_name: vec_data}, fp, indent=4)
+            #     sz = os.path.getsize('test.json')
+            #     sz_factor = sz / size
+            #     size = sz
+            #     os.remove('test.json')
+
+            
+            if size > 0.99 * size_limit:
+                filename = '{}_{:03d}.json'.format(
+                    json_file_name, file_counter)
+                with open(filename, 'w') as fp:
+                    json.dump(
+                        {input_var_name: vec_data[0:-1]}, fp, indent=4)
+                sz = os.path.getsize(filename)
+                sz_factor = sz / size_1
+                size = sz
+                size = 0
+                file_counter += 1
+                vec_data = [vec_data[-1]]
+        filename = '{}_{:03d}.json'.format(json_file_name, file_counter)
+        with open(filename, 'w') as fp:
+            json.dump(
+                {input_var_name: vec_data}, fp, indent=4)
+
+
+            
 j_file_name = 'ss'
 var_name = 'vv'
 lim = -1
