@@ -411,7 +411,7 @@ task bgquery
                 with open(filename, 'w') as fp:
                     json.dump(
                         {input_var_name: vec_data}, fp, indent=4)
-                j_file_name = '~{json_file}'
+        j_file_name = '~{json_file}'
         var_name = 'data'
         lim = ~{patien_count_to_query}
         query_and_write(j_file_name, var_name, lim)
