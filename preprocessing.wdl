@@ -12,9 +12,9 @@ workflow preprocessing_workflow
         preproc_input_var_name=preproc_input_var_name,
         patien_count_to_query=patien_count_to_query
         }
-    scatter(j in range(length(bgquery.jsonfile)))
+    scatter(j in range(length(bgquery.jsonfiles)))
     {
-        Object tmp = read_json(bgquery.jsonfile[j])
+        Object tmp = read_json(bgquery.jsonfiles[j])
         Array[Object] inputs = tmp.data
     }
     Array[Object] flattened_inputs = flatten(inputs)
