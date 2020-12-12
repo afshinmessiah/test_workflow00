@@ -43,8 +43,8 @@ workflow preprocessing_workflow
     {
         Array[File] w_output1 = flatten(preprocessing_task.files_1)
         Array[File] w_output2 = flatten(preprocessing_task.files_2)
-        File jj = jjjjsss
-        File inn = innnppp
+        # File jj = jjjjsss
+        # File inn = innnppp
     }
 }
 task preprocessing_task
