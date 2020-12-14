@@ -99,7 +99,6 @@ def query_and_write(json_file_name: str,
         )
         file_counter = 0
         vec_data = []
-        size = 0
         sz_factor = 1
         for i, row in enumerate(q_results):
             content += content_form.format(
@@ -125,6 +124,15 @@ def query_and_write(json_file_name: str,
             data1["SEGSTUDYINSTANCEUID"] = row.SEGSTUDYINSTANCEUID
             data1["SEGSERIESINSTANCEUID"] = row.SEGSERIESINSTANCEUID
             data1["INPUT_SG"] = row.INPUT_SG
+            for i in range(0, len(data1["INPUT_CT"])):
+                data1["INPUT_CT"][i] = data1["INPUT_CT"][i].replace(
+                    'idc-tcia-1-nsclc-radiomics', "idc-tcia-nsclc-radiomics")
+            for i in range(0, len(data1["INPUT_RT"])):
+                data1["INPUT_RT"][i] = data1["INPUT_RT"][i].replace(
+                    'idc-tcia-1-nsclc-radiomics', "idc-tcia-nsclc-radiomics")
+            for i in range(0, len(data1["INPUT_SG"])):
+                data1["INPUT_SG"][i] = data1["INPUT_SG"][i].replace(
+                    'idc-tcia-1-nsclc-radiomics', "idc-tcia-nsclc-radiomics")
             vec_data.append(data1)
             size = len(
                 json.dumps({input_var_name: vec_data}, indent=4)) * sz_factor
@@ -147,8 +155,6 @@ def query_and_write(json_file_name: str,
                         {input_var_name: vec_data[0:-1]}, fp, indent=4)
                 sz = os.path.getsize(filename)
                 sz_factor = sz / size_1
-                size = sz
-                size = 0
                 file_counter += 1
                 vec_data = [vec_data[-1]]
         filename = '{}_{:03d}.json'.format(json_file_name, file_counter)
