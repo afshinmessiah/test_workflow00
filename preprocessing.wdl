@@ -220,7 +220,7 @@ task preprocessing_task
         text_file.write(out_text)
         text_file.close()
         CODE
-    gsutil cp -r output_dir ~{destinationBucket}
+        gsutil cp -r '~{output_dir}' '~{destinationBucket}'
     >>>
     runtime
     {
