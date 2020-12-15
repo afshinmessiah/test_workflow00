@@ -225,7 +225,7 @@ task preprocessing_task
     runtime
     {
         # docker: "biocontainers/plastimatch:v1.7.4dfsg.1-2-deb_cv1"
-        docker: "afshinmha/plastimatch_terra_00:latest"
+        docker: "afshinmha/plastimatch_terra_00:terra_run00"
         memory: "4GB"
 
     }
@@ -430,7 +430,7 @@ task bgquery
     
     runtime
     {
-        docker: "afshinmha/plastimatch_terra_00:latest"
+        docker: "afshinmha/plastimatch_terra_00:terra_run00"
         memory: "1GB"
     }
     output

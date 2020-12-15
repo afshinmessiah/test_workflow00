@@ -171,7 +171,7 @@ task bgquery
     
     runtime
     {
-        docker: "afshinmha/plastimatch_terra_00:latest"
+        docker: "afshinmha/plastimatch_terra_00:terra_run00"
         memory: "1GB"
     }
     output
