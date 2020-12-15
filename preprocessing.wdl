@@ -257,7 +257,6 @@ task bgquery
     String output_dtype = "int"
     command
     <<<
-        pip3 install google-cloud-bigquery
         python3 <<CODE
         from google.cloud import bigquery
         import os
