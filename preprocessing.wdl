@@ -56,6 +56,7 @@ task preprocessing_task
         String output_dir
         String pat_id
     }
+    String destinationBucket = 'gs://afshin_deep_prognosis'
     String ct_interpolation = 'linear'
     String output_dtype = "int"
     command
@@ -219,6 +220,7 @@ task preprocessing_task
         text_file.write(out_text)
         text_file.close()
         CODE
+    gsutil cp -r output_dir ~{destinationBucket}
     >>>
     runtime
     {
