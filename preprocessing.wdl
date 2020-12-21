@@ -1,6 +1,7 @@
 version 1.0
 
-import "https://github.com/afshinmessiah/Workflow_PrognosisInput/blob/master/InputFromTable.wdl" as InputWorkflow
+import "https://raw.githubusercontent.com/afshinmessiah/Workflow_PrognosisInput/master/InputFromTable.wdl" as InputWorkflow
+
 
 
 workflow preprocessing_workflow
