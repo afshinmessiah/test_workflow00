@@ -47,13 +47,11 @@ workflow preprocessing_workflow
         }
 
     }
-    # call preprocessing_task
-    # { 
-    #     input: dicom_ct_list=inputs[0].INPUT_CT,
-    #     dicom_rt_list=inputs[0].INPUT_RT,
-    #     output_dir='./xxx',
-    #     pat_id=inputs[0].PATIENTID
-    # }
+    meta {
+        author: "Afshin"
+        email: "akbarzadehm@gmail.com"
+        description: "This is a test on terra"
+    }
     output
     {
         Array[String] dest = preprocessing_task.destination
@@ -254,11 +252,7 @@ task preprocessing_task
         # Array[File] files_1 = glob(output_dir + "/*")
         # Array[File] files_2 = glob(output_dir + "/*/*")
     }
-    meta {
-        author: "Afshin"
-        email: "akbarzadehm@gmail.com"
-        description: "This is a test on terra"
-    }
+
 
 }
 
