@@ -1,6 +1,6 @@
 version 1.0
 
-import "https://raw.githubusercontent.com/afshinmessiah/Workflow_PrognosisInput/master/InputFromTable.wdl" as InputWorkflow
+import "https://raw.githubusercontent.com/afshinmessiah/Workflow_PrognosisInput/master/InputFromTable.wdl" as outsource
 
 
 
@@ -13,7 +13,7 @@ workflow preprocessing_workflow
         Array[String] sg_seriesinstanceuid
         String json_file
     }
-    call InputWorkflow.QueryInputs{
+    call outsource.QueryInputs{
         input: patient_id=patient_id,
         ct_seriesinstanceuid=ct_seriesinstanceuid,
         rt_seriesinstanceuid=rt_seriesinstanceuid,
@@ -27,9 +27,9 @@ workflow preprocessing_workflow
     # }
 
 
-    scatter(j in range(length(InputWorkflow.QueryInputs.jsonfiles)))
+    scatter(j in range(length(outsource.QueryInputs.jsonfiles)))
     {
-        Object tmp = read_json(InputWorkflow.QueryInputs.jsonfiles[j])
+        Object tmp = read_json(outsource.QueryInputs.jsonfiles[j])
         Array[Object] inputs = tmp.data
     }
     Array[Object] flattened_inputs = flatten(inputs)
