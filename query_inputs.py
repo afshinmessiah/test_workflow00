@@ -1,6 +1,25 @@
 from google.cloud import bigquery
 import os
 import json
+def writeInTsvFile(data: list) -> str:
+    ref = data[0].keys()
+    header = 'entity:patient_id'
+    for i, k in enumerate(ref):
+        if i == 0:
+            header += "\t"
+            continue
+        header +=  k + "\t"
+    header += '\n'
+    for dataelem in data:
+        vals = dataelem.values()
+        new_line = ''
+        for v in vals:
+            new_line += (v + '\t')
+        header += new_line + '\n'
+    return header
+
+        
+
 def query_and_write(json_file_name: str,
                     input_var_name: str,
                     pat_number: int = -1):
@@ -115,24 +134,24 @@ def query_and_write(json_file_name: str,
             )
             data1 = {}
             data1["PATIENTID"] = row.PATIENTID
-            data1["CTSTUDYINSTANCEUID"] = row.CTSTUDYINSTANCEUID
+            # data1["CTSTUDYINSTANCEUID"] = row.CTSTUDYINSTANCEUID
             data1["CTSERIESINSTANCEUID"] = row.CTSERIESINSTANCEUID
-            data1["INPUT_CT"] = row.INPUT_CT
-            data1["RTSTRUCTSTUDYINSTANCEUID"] = row.RTSTRUCTSTUDYINSTANCEUID
+            # data1["INPUT_CT"] = row.INPUT_CT
+            # data1["RTSTRUCTSTUDYINSTANCEUID"] = row.RTSTRUCTSTUDYINSTANCEUID
             data1["RTSTRUCTSERIESINSTANCEUID"] = row.RTSTRUCTSERIESINSTANCEUID
-            data1["INPUT_RT"] = row.INPUT_RT
-            data1["SEGSTUDYINSTANCEUID"] = row.SEGSTUDYINSTANCEUID
+            # data1["INPUT_RT"] = row.INPUT_RT
+            # data1["SEGSTUDYINSTANCEUID"] = row.SEGSTUDYINSTANCEUID
             data1["SEGSERIESINSTANCEUID"] = row.SEGSERIESINSTANCEUID
-            data1["INPUT_SG"] = row.INPUT_SG
-            for i in range(0, len(data1["INPUT_CT"])):
-                data1["INPUT_CT"][i] = data1["INPUT_CT"][i].replace(
-                    'idc-tcia-1-nsclc-radiomics', "idc-tcia-nsclc-radiomics")
-            for i in range(0, len(data1["INPUT_RT"])):
-                data1["INPUT_RT"][i] = data1["INPUT_RT"][i].replace(
-                    'idc-tcia-1-nsclc-radiomics', "idc-tcia-nsclc-radiomics")
-            for i in range(0, len(data1["INPUT_SG"])):
-                data1["INPUT_SG"][i] = data1["INPUT_SG"][i].replace(
-                    'idc-tcia-1-nsclc-radiomics', "idc-tcia-nsclc-radiomics")
+            # data1["INPUT_SG"] = row.INPUT_SG
+            # for i in range(0, len(data1["INPUT_CT"])):
+            #     data1["INPUT_CT"][i] = data1["INPUT_CT"][i].replace(
+            #         'idc-tcia-1-nsclc-radiomics', "idc-tcia-nsclc-radiomics")
+            # for i in range(0, len(data1["INPUT_RT"])):
+            #     data1["INPUT_RT"][i] = data1["INPUT_RT"][i].replace(
+            #         'idc-tcia-1-nsclc-radiomics', "idc-tcia-nsclc-radiomics")
+            # for i in range(0, len(data1["INPUT_SG"])):
+            #     data1["INPUT_SG"][i] = data1["INPUT_SG"][i].replace(
+            #         'idc-tcia-1-nsclc-radiomics', "idc-tcia-nsclc-radiomics")
             vec_data.append(data1)
             size = len(
                 json.dumps({input_var_name: vec_data}, indent=4)) * sz_factor
@@ -161,6 +180,12 @@ def query_and_write(json_file_name: str,
         with open(filename, 'w') as fp:
             json.dump(
                 {input_var_name: vec_data}, fp, indent=4)
+        
+        with open('x.tsv', 'w') as fp:
+            content = writeInTsvFile(vec_data)
+            print(content)
+            fp.write(content)
+            
 
 
             

@@ -1,20 +1,34 @@
 version 1.0
 
+import "https://github.com/afshinmessiah/Workflow_PrognosisInput/blob/master/InputFromTable.wdl" as InputWorkflow
+
+
 workflow preprocessing_workflow
 {
-    input {
+    input{
+        Array[String] patient_id
+        Array[String] ct_seriesinstanceuid
+        Array[String] rt_seriesinstanceuid
+        Array[String] sg_seriesinstanceuid
         String json_file
-        String preproc_input_var_name
-        Int patien_count_to_query
     }
-    call bgquery{input:
-        json_file=json_file,
-        preproc_input_var_name=preproc_input_var_name,
-        patien_count_to_query=patien_count_to_query
-        }
-    scatter(j in range(length(bgquery.jsonfiles)))
+    call InputWorkflow.QueryInputs{
+        input: patient_id=patient_id,
+        ct_seriesinstanceuid=ct_seriesinstanceuid,
+        rt_seriesinstanceuid=rt_seriesinstanceuid,
+        sg_seriesinstanceuid=sg_seriesinstanceuid,
+        json_file=json_file
+    }
+    # output{
+    #     Array[String] out = QueryInputs.out
+    #     Array[File] jsonfile = QueryInputs.json
+
+    # }
+
+
+    scatter(j in range(length(InputWorkflow.QueryInputs.jsonfiles)))
     {
-        Object tmp = read_json(bgquery.jsonfiles[j])
+        Object tmp = read_json(InputWorkflow.QueryInputs.jsonfiles[j])
         Array[Object] inputs = tmp.data
     }
     Array[Object] flattened_inputs = flatten(inputs)
@@ -27,7 +41,7 @@ workflow preprocessing_workflow
         { 
             input: dicom_ct_list=flattened_inputs[i].INPUT_CT,
             dicom_rt_list=flattened_inputs[i].INPUT_RT,
-            output_dir='./xxx',
+            output_dir='./Folder_' + flattened_inputs[i].PATIENTID,
             pat_id=flattened_inputs[i].PATIENTID
         }
 
@@ -41,8 +55,9 @@ workflow preprocessing_workflow
     # }
     output
     {
-        Array[File] w_output1 = flatten(preprocessing_task.files_1)
-        Array[File] w_output2 = flatten(preprocessing_task.files_2)
+        Array[String] dest = preprocessing_task.destination
+        # Array[File] w_output1 = flatten(preprocessing_task.files_1)
+        # Array[File] w_output2 = flatten(preprocessing_task.files_2)
         # File jj = jjjjsss
         # File inn = innnppp
     }
@@ -231,11 +246,12 @@ task preprocessing_task
     }
     output 
     {
+        String destination = output_dir + "/" + output_dir
         # Object outtt = read_json('outputfiles.json')
         # Array[File] outputfiles = outtt.data
         # Array[File] all_files = read_lines('outputfiles.txt')
-        Array[File] files_1 = glob(output_dir + "/*")
-        Array[File] files_2 = glob(output_dir + "/*/*")
+        # Array[File] files_1 = glob(output_dir + "/*")
+        # Array[File] files_2 = glob(output_dir + "/*/*")
     }
     meta {
         author: "Afshin"
