@@ -1,35 +1,20 @@
 version 1.0
 
-import "https://raw.githubusercontent.com/afshinmessiah/Workflow_PrognosisInput/master/InputFromTable.wdl" as outsource
-
-
-
 workflow preprocessing_workflow
 {
-    input{
-        Array[String] patient_id
-        Array[String] ct_seriesinstanceuid
-        Array[String] rt_seriesinstanceuid
-        Array[String] sg_seriesinstanceuid
+    input {
         String json_file
+        String preproc_input_var_name
+        Int patien_count_to_query
     }
-    call outsource.QueryInputs{
-        input: patient_id=patient_id,
-        ct_seriesinstanceuid=ct_seriesinstanceuid,
-        rt_seriesinstanceuid=rt_seriesinstanceuid,
-        sg_seriesinstanceuid=sg_seriesinstanceuid,
-        json_file=json_file
-    }
-    # output{
-    #     Array[String] out = QueryInputs.out
-    #     Array[File] jsonfile = QueryInputs.json
-
-    # }
-
-
-    scatter(j in range(length(outsource.QueryInputs.jsonfiles)))
+    call bgquery{input:
+        json_file=json_file,
+        preproc_input_var_name=preproc_input_var_name,
+        patien_count_to_query=patien_count_to_query
+        }
+    scatter(j in range(length(bgquery.jsonfiles)))
     {
-        Object tmp = read_json(outsource.QueryInputs.jsonfiles[j])
+        Object tmp = read_json(bgquery.jsonfiles[j])
         Array[Object] inputs = tmp.data
     }
     Array[Object] flattened_inputs = flatten(inputs)
@@ -42,21 +27,22 @@ workflow preprocessing_workflow
         { 
             input: dicom_ct_list=flattened_inputs[i].INPUT_CT,
             dicom_rt_list=flattened_inputs[i].INPUT_RT,
-            output_dir='./Folder_' + flattened_inputs[i].PATIENTID,
+            output_dir='./xxx',
             pat_id=flattened_inputs[i].PATIENTID
         }
 
     }
-    meta {
-        author: "Afshin"
-        email: "akbarzadehm@gmail.com"
-        description: "This is a test on terra"
-    }
+    # call preprocessing_task
+    # { 
+    #     input: dicom_ct_list=inputs[0].INPUT_CT,
+    #     dicom_rt_list=inputs[0].INPUT_RT,
+    #     output_dir='./xxx',
+    #     pat_id=inputs[0].PATIENTID
+    # }
     output
     {
-        Array[String] dest = preprocessing_task.destination
-        # Array[File] w_output1 = flatten(preprocessing_task.files_1)
-        # Array[File] w_output2 = flatten(preprocessing_task.files_2)
+        Array[File] w_output1 = flatten(preprocessing_task.files_1)
+        Array[File] w_output2 = flatten(preprocessing_task.files_2)
         # File jj = jjjjsss
         # File inn = innnppp
     }
@@ -245,14 +231,17 @@ task preprocessing_task
     }
     output 
     {
-        String destination = output_dir + "/" + output_dir
         # Object outtt = read_json('outputfiles.json')
         # Array[File] outputfiles = outtt.data
         # Array[File] all_files = read_lines('outputfiles.txt')
-        # Array[File] files_1 = glob(output_dir + "/*")
-        # Array[File] files_2 = glob(output_dir + "/*/*")
+        Array[File] files_1 = glob(output_dir + "/*")
+        Array[File] files_2 = glob(output_dir + "/*/*")
     }
-
+    meta {
+        author: "Afshin"
+        email: "akbarzadehm@gmail.com"
+        description: "This is a test on terra"
+    }
 
 }
 
